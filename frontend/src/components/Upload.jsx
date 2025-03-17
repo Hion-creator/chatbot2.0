@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Upload = ({ companyId }) => {
+const Upload = ({ token }) => {
   const [file, setFile] = useState(null);
 
   const handleUpload = async (e) => {
@@ -10,16 +10,22 @@ const Upload = ({ companyId }) => {
       return;
     }
     const formData = new FormData();
-    formData.append("company_id", companyId);
+    // Eliminamos la línea que envía "company_id" ya que el backend lo obtiene del token
     formData.append("file", file);
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/data/upload_pdf", {
+      const response = await fetch("http://127.0.0.1:8000/data/upload_pdf", {
         method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          // No se debe establecer "Content-Type" para FormData
+        },
         body: formData,
       });
-      if (!res.ok) throw new Error("Error al subir el archivo PDF");
-      const data = await res.json();
+      if (!response.ok) {
+        throw new Error("Error al subir el archivo PDF");
+      }
+      const data = await response.json();
       alert(data.message);
     } catch (error) {
       alert("Error en la subida: " + error.message);
@@ -49,3 +55,4 @@ const Upload = ({ companyId }) => {
 };
 
 export default Upload;
+

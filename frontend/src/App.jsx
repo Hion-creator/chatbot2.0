@@ -5,17 +5,18 @@ import Chat from "./components/Chat";
 
 function App() {
   const [companyId, setCompanyId] = useState(null);
+  const [token, setToken] = useState(null);
   const [isLogged, setIsLogged] = useState(false);
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <div className="bg-white shadow-md rounded-lg w-full max-w-xl p-6">
         {!isLogged ? (
-          <Login setCompanyId={setCompanyId} setIsLogged={setIsLogged} />
+          <Login setCompanyId={setCompanyId} setToken={setToken} setIsLogged={setIsLogged} />
         ) : (
           <>
-            <Upload companyId={companyId} />
-            <Chat companyId={companyId} />
+            <Upload companyId={companyId} token={token} />
+            <Chat companyId={companyId} token={token} />
           </>
         )}
       </div>
@@ -24,4 +25,5 @@ function App() {
 }
 
 export default App;
+
 

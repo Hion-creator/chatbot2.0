@@ -4,3 +4,7 @@ firebase-admin
 ollama
 PyPDF2
 python-multipart
+pyjwt
+slowapi
+bcrypt
+python-dotenv

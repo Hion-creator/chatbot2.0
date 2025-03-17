@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Login = ({ setCompanyId, setIsLogged }) => {
+const Login = ({ setCompanyId, setToken, setIsLogged }) => {
   const [companyName, setCompanyName] = useState("");
   const [password, setPassword] = useState("");
 
@@ -14,7 +14,9 @@ const Login = ({ setCompanyId, setIsLogged }) => {
       });
       if (!res.ok) throw new Error("Credenciales incorrectas");
       const data = await res.json();
+      // Se asume que la respuesta incluye "access_token" y "id"
       setCompanyId(data.id);
+      setToken(data.access_token);
       setIsLogged(true);
     } catch (error) {
       alert("Error en el login: " + error.message);
@@ -41,10 +43,7 @@ const Login = ({ setCompanyId, setIsLogged }) => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600"
-        >
+        <button type="submit" className="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600">
           Iniciar sesión
         </button>
       </form>
