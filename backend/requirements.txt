@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+firebase-admin
+ollama
+PyPDF2
+python-multipart
