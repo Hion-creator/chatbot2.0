@@ -8,3 +8,4 @@ pyjwt
 slowapi
 bcrypt
 python-dotenv
+unidecode
