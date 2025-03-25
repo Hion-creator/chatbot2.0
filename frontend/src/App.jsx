@@ -1,29 +1,33 @@
-import { useState } from "react";
-import Login from "./components/Login";
-import Upload from "./components/Upload";
-import Chat from "./components/Chat";
+import React from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Login from './components/Login'
+import Dashboard from './components/Dashboard'
+import UploadPDF from './components/UploadPDF'
+import Metrics from './components/Metrics'
+import OnboardingBot from './components/OnboardingBot'
+import ExamForm from './components/ExamForm'
+import QueryBot from './components/QueryBot' // opcional
 
 function App() {
-  const [companyId, setCompanyId] = useState(null);
-  const [token, setToken] = useState(null);
-  const [isLogged, setIsLogged] = useState(false);
-
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <div className="bg-white shadow-md rounded-lg w-full max-w-xl p-6">
-        {!isLogged ? (
-          <Login setCompanyId={setCompanyId} setToken={setToken} setIsLogged={setIsLogged} />
-        ) : (
-          <>
-            <Upload companyId={companyId} token={token} />
-            <Chat companyId={companyId} token={token} />
-          </>
-        )}
-      </div>
-    </div>
-  );
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/upload" element={<UploadPDF />} />
+        <Route path="/metrics" element={<Metrics />} />
+        <Route path="/onboarding" element={<OnboardingBot />} />
+        <Route path="/exam" element={<ExamForm />} />
+        <Route path="/query" element={<QueryBot />} />
+      </Routes>
+    </Router>
+  )
 }
 
-export default App;
+export default App
+
+
+
+
 
 

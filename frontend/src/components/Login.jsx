@@ -1,54 +1,55 @@
-import { useState } from "react";
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { login } from '../services/api'
 
-const Login = ({ setCompanyId, setToken, setIsLogged }) => {
-  const [companyName, setCompanyName] = useState("");
-  const [password, setPassword] = useState("");
+function Login() {
+  const [companyName, setCompanyName] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const navigate = useNavigate()
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault()
     try {
-      const res = await fetch("http://127.0.0.1:8000/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ company_name: companyName, password }),
-      });
-      if (!res.ok) throw new Error("Credenciales incorrectas");
-      const data = await res.json();
-      // Se asume que la respuesta incluye "access_token" y "id"
-      setCompanyId(data.id);
-      setToken(data.access_token);
-      setIsLogged(true);
-    } catch (error) {
-      alert("Error en el login: " + error.message);
+      const res = await login({ company_name: companyName, password })
+      localStorage.setItem('token', res.access_token)
+      navigate('/dashboard')
+    } catch (err) {
+      console.error(err)
+      setError('Error de autenticación')
     }
-  };
+  }
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold text-center mb-4">Login Empresa</h2>
-      <form onSubmit={handleLogin} className="space-y-4">
-        <input
-          type="text"
-          placeholder="Nombre de la empresa"
-          className="w-full p-3 border border-gray-300 rounded"
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md w-80">
+        <h1 className="text-xl font-bold mb-4">Iniciar Sesión</h1>
+        {error && <p className="text-red-500">{error}</p>}
+        <input 
+          type="text" 
+          placeholder="Nombre de la Empresa" 
           value={companyName}
           onChange={(e) => setCompanyName(e.target.value)}
+          className="border p-2 mb-4 w-full"
           required
         />
-        <input
-          type="password"
-          placeholder="Contraseña"
-          className="w-full p-3 border border-gray-300 rounded"
+        <input 
+          type="password" 
+          placeholder="Contraseña" 
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          className="border p-2 mb-4 w-full"
           required
         />
-        <button type="submit" className="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600">
-          Iniciar sesión
+        <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded">
+          Ingresar
         </button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login
+
+
+
