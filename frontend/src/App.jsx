@@ -12,7 +12,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<OnboardingBot />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/upload" element={<UploadPDF />} />
         <Route path="/metrics" element={<Metrics />} />
