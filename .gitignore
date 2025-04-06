@@ -1,0 +1,30 @@
+# Ignorar entornos virtuales
+venv/
+backend/venv/
+.env
+*.env
+
+# Ignorar caché de Python
+__pycache__/
+backend/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+
+# Ignorar config firebase
+backend/app/config/firebaseKey.json
+
+# Ignorar dependencias de frontend
+frontend/node_modules/
+
+# Ignorar archivos de compilación y logs
+dist/
+build/
+*.log
+logs/
+debug.log
+
+# Ignorar configuraciones de editores
+.vscode/
+.idea/
