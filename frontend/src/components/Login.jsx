@@ -15,7 +15,7 @@ function Login() {
     try {
       const res = await login({ company_name: companyName, password })
       localStorage.setItem('token', res.access_token)
-      navigate('/dashboard')
+      navigate('/menu')
     } catch (err) {
       console.error(err)
       setError('Error de autenticación')
