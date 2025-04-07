@@ -25,6 +25,7 @@ function Login() {
     try {
       const res = await login({ company_name: companyName, password })
       localStorage.setItem('token', res.access_token)
+      localStorage.setItem("empresa", res.company_name);
       navigate('/menu')
     } catch (err) {
       console.error(err)
