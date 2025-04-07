@@ -1,17 +1,7 @@
-const BASE_URL = 'http://127.0.0.1:8000'
+import { BASE_URL } from '../config'
 
 function getToken() {
   return localStorage.getItem('token')
-}
-
-export async function login(credentials) {
-  const res = await fetch(`${BASE_URL}/auth/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(credentials)
-  })
-  if (!res.ok) throw new Error('Error en login')
-  return res.json()
 }
 
 export async function uploadPDF(file) {

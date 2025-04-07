@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from "prop-types";
 import { FiBarChart2, FiFileText, FiHome, FiLogOut, FiSearch, FiUpload, FiUsers } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 const Route = ({ selected, Icon, title, onClick }) => {
-    const isLogout = title === "Log Out"; // Detecta si es el botón de logout
+    const isLogout = title === "Log Out";
 
     return (
         <button
@@ -31,6 +32,17 @@ Route.propTypes = {
 };
 
 function RouteSelect({ activePage, setActivePage }) {
+    const [showLogoutMessage, setShowLogoutMessage] = useState(false);
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        setShowLogoutMessage(true);
+        setTimeout(() => {
+            setShowLogoutMessage(false);
+            navigate("/");
+        }, 1000);
+    };
 
     const routes = [
         { title: "Dashboard", Icon: FiHome },
@@ -42,18 +54,25 @@ function RouteSelect({ activePage, setActivePage }) {
     ];
 
     return (
-        <div className="space-y-1">
-            {routes.map(({ title, Icon }) => (
-                <Route
-                    key={title}
-                    Icon={Icon}
-                    selected={activePage === title}
-                    title={title}
-                    onClick={() => setActivePage(title)}
-                />
-            ))}
-            <Route Icon={FiLogOut} selected={false} title="Log Out" onClick={() => console.log("Cerrar sesión")} />
-        </div>
+        <>
+            <div className="space-y-1">
+                {routes.map(({ title, Icon }) => (
+                    <Route
+                        key={title}
+                        Icon={Icon}
+                        selected={activePage === title}
+                        title={title}
+                        onClick={() => setActivePage(title)}
+                    />
+                ))}
+                <Route Icon={FiLogOut} selected={false} title="Log Out" onClick={handleLogout} />
+            </div>
+            {showLogoutMessage && (
+                <div className="fixed top-5 right-5 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg transition-opacity duration-300">
+                    ✅ Sesión cerrada con éxito
+                </div>
+            )}
+        </>
     );
 }
 
