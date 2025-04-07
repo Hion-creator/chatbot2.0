@@ -47,6 +47,6 @@ def login_company(user_input: CompanyLogin):
 
         if stored_password and bcrypt.checkpw(password.encode(), stored_password.encode()):
             token = create_access_token({"sub": company.id}, expires_delta=timedelta(minutes=60))
-            return {"access_token": token, "token_type": "bearer"}
+            return {"access_token": token, "token_type": "bearer", "company_name": company_data["company_name"]}
 
     raise HTTPException(status_code=401, detail="Credenciales incorrectas")
