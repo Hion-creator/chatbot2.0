@@ -59,12 +59,12 @@ const LandP = () => {
 
         <div className="mt-6 text-sm text-[#5E6C84]">
                    <span>¿Quieres personalizar tu onboarding? </span>
-          <span
+          <button
             onClick={handleWhatsAppClick}
             className="text-[#0052CC] cursor-pointer hover:underline"
           >
             Contáctanos por WhatsApp
-          </span>
+          </button>
         </div>
       </div>
     </div>

@@ -83,6 +83,15 @@ function ExamForm() {
     }
   };
 
+  let buttonText;
+  if (isSubmitting) {
+    buttonText = "Enviando...";
+  } else if (isError) {
+    buttonText = "Error al enviar";
+  } else {
+    buttonText = "Enviar Respuestas";
+  }
+
   if (!exam) return <p className="text-center text-gray-500">Cargando examen...</p>;
 
   return (
@@ -130,9 +139,9 @@ function ExamForm() {
           ) : (
             <button
               type="submit"
-              className={`ml-50 w-full font-semibold px-6 py-3 rounded-lg shadow-md transition-all duration-300 ${isError ? 'bg-red-600 hover:bg-red-700' : 'bg-blue-600 hover:bg-blue-700'} text-white`}
+              className={`ml-80 w-full font-semibold px-6 py-3 rounded-lg shadow-md transition-all duration-300 ${isError ? 'bg-red-600 hover:bg-red-700' : 'bg-blue-600 hover:bg-blue-700'} text-white`}
             >
-              {isSubmitting ? "Enviando..." : isError ? "Error al enviar" : "Enviar Respuestas"}
+              {buttonText}
             </button>
           )}
         </div>
