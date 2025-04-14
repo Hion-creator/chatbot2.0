@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Login from './components/Login'
+import LandP from './components/LandP'
 import Menu from './components/Menu'
 import PrivateRoute from "./routes/PrivateRoute"
 import "./index.css";
@@ -10,7 +11,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<LandP />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/menu" element={
         <PrivateRoute>
           <Menu />
