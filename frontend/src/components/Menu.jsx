@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Sidebar from "./SlideBar/Sidebar";
+import Sidebar from "./SlideBar/Slidebar";
 import Dashboard from "./Dashboard";
 import UploadPDF from "./UploadPDF";
 import Metrics from "./Metrics";

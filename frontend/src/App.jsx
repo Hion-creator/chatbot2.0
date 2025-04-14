@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Login from './components/Login'
 import Menu from './components/Menu'
+import PrivateRoute from "./routes/PrivateRoute"
 import "./index.css";
 
 
@@ -10,7 +11,11 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/menu/" element={<Menu />} />
+        <Route path="/menu" element={
+        <PrivateRoute>
+          <Menu />
+        </PrivateRoute>
+      } />
       </Routes>
     </Router>
   )
