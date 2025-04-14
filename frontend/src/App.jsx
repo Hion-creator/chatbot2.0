@@ -11,7 +11,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Menu />} />
+        <Route path="/" element={<LandP />} />
         <Route path="/login" element={<Login />} />
         <Route path="/menu" element={
         <PrivateRoute>
