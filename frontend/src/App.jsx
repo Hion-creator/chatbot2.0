@@ -8,12 +8,14 @@ import OnboardingBot from './components/OnboardingBot'
 import ExamForm from './components/ExamForm'
 import QueryBot from './components/QueryBot'
 import DashboardContent from './components/DashboardContent'
+import SolicitudCuenta from './components/SolicitudCuenta'
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/solicitud-cuenta" element={<SolicitudCuenta />} />
         
         {/* Rutas protegidas bajo el Layout con sidebar */}
         <Route path="/" element={<Layout />}>

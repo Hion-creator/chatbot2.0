@@ -81,6 +81,16 @@ function Login() {
             >
               {isLoading ? 'Ingresando...' : 'Ingresar'}
             </button>
+            <p className="text-center text-sm text-blue-300 mt-4">
+            ¿No tienes cuenta?{' '}
+            <button
+            type="button"
+            onClick={() => navigate('/solicitud-cuenta')}
+            className="underline hover:text-blue-400"
+            >
+            Crea tu solicitud aquí
+            </button>
+</p>
           </form>
         </div>
       </div>
