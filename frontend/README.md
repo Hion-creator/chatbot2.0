@@ -25,3 +25,19 @@ frontend/
 │   │   └── api.js             // Funciones para llamar a los endpoints del backend
 │   └── index.css              // Estilos (por ejemplo, usando Tailwind CSS)
 └── package.json
+
+# Frontend - Chatbot de Onboarding Empresarial
+
+## 📌 Instalación
+
+1. Clonar el repositorio:
+   ```bash
+   git clone https://github.com/Hion-creator/chatbot2.0.git
+   cd backend-chatbot
+   ```
+
+2. arranque:
+   ```
+   npm i
+   npm run dev
+   ```
