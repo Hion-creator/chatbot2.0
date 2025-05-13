@@ -9,9 +9,9 @@ router = APIRouter()
 
 @router.post("/chatbot")
 def chatbot_interaction(user_input: dict, company_id: str = Depends(verify_token)):
-    # Obtener datos de onboarding de la empresa desde Firebase
     company_ref = db.collection("companies").document(company_id)
     company_snapshot = company_ref.get()
+
     if not company_snapshot.exists:
         raise HTTPException(status_code=404, detail="Empresa no encontrada")
     
@@ -28,26 +28,54 @@ def chatbot_interaction(user_input: dict, company_id: str = Depends(verify_token
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Error al descifrar datos: {e}")
 
-    # Si la información es muy extensa, la truncamos o resumimos (aquí limitamos a 500 caracteres)
-    max_length = 500
-    if len(onboarding_data) > max_length:
-        onboarding_data = onboarding_data[:max_length] + "..."
-
-    # Validar que se reciba un mensaje en el body
-    message = user_input.get("message")
+    message = user_input.get("message", "")
     if not message:
         raise HTTPException(status_code=400, detail="No se proporcionó mensaje en el body")
     
-    # Construir el prompt incluyendo el contexto del PDF
-    messages = [
-        {"role": "system", "content": f"Utiliza la siguiente información de la empresa para responder: {onboarding_data}"},
-        {"role": "user", "content": message}
-    ]
+    # 🔍 Intentamos detectar si se menciona a un empleado
+    nombre_empleado = user_input.get("employee_name", "").strip().lower()
+    if nombre_empleado:
+        onboardings_ref = company_ref.collection("onboardings")
+        empleado = None
+        for doc in onboardings_ref.stream():
+            data = doc.to_dict()
+            if data.get("nombre", "").strip().lower() == nombre_empleado:
+                empleado = data
+                break
+        
+        if empleado:
+            estado = empleado.get("estado", "pendiente")
+            tareas = empleado.get("tareas", [])
+            task_index = next((i for i, t in enumerate(tareas) if t.get("estado") != "terminada"), 0)
+
+            if "iniciar" in message.lower():
+                return {
+                    "response": f"Hola {empleado['nombre']}, para iniciar tu onboarding por favor ingresa tu código enviado al correo {empleado['correo']}."
+                }
+            elif "listo para examen" in message.lower():
+                return {
+                    "response": f"Perfecto. Puedes iniciar tu evaluación de la tarea: {tareas[task_index]['descripcion']}.",
+                    "exam_ready": True,
+                    "task_index": task_index
+                }
+            elif "tarea" in message.lower():
+                descripcion = tareas[task_index].get("descripcion", "")
+                return {
+                    "response": f"Tu tarea actual es: {descripcion}. Puedes preguntarme sobre ella si lo deseas.",
+                    "task_index": task_index
+                }
     
+    # 🤖 Pregunta general sobre la empresa
+    prompt = (
+        f"Usa la siguiente información de la empresa:\n{onboarding_data}\n\n"
+        f"Responde la siguiente pregunta de manera concisa: {message}"
+    )
+
     try:
-        response = ollama.chat("gemma2", messages)
+        response = ollama.chat("gemma3", [{"role": "user", "content": prompt}])
+        content = response.get("message", {}).get("content", "").strip()
+        return {"response": content}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error al comunicarse con el modelo de IA: {e}")
-    
-    return {"response": response}
+        raise HTTPException(status_code=500, detail=f"Error interactuando con el bot: {e}")
+
 

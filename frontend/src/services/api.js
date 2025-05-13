@@ -119,5 +119,18 @@ export async function getTaskQuery(params) {
   return res.json()
 }
 
+export async function chatbotInteraction(data) {
+  const res = await fetch(`${BASE_URL}/onboarding/chatbot`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${getToken()}`
+    },
+    body: JSON.stringify(data)
+  })
+  if (!res.ok) throw new Error('Error interactuando con el bot')
+  return res.json()
+}
+
 
 
